@@ -1,20 +1,57 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from "react";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  StatusBar,
+} from "react-native";
+
+import { WebView } from "react-native-webview";
+
+import { MapaHTML, script } from "./scriptmapa";
+const myHtmlFile = require("./assets/teste-mapa.html");
+
+const runFirst = `console.log("mapa");`;
+
+const MapPageContent = () => {
+  useEffect(() => {
+    webref.injectJavaScript(script);
+  }, []);
+
+  return (
+    <WebView
+      ref={(r) => (webref = r)}
+      originWhitelist={["*"]}
+      javaScriptEnabledAndroid={true}
+      style={styles.mapa}
+      source={{ html: MapaHTML }}
+      onMessage={(event) => {}}
+      injectedJavaScript={runFirst}
+    />
+  );
+};
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <MapPageContent />
+      <View style={{height: 200}}>
+        
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  },
+  mapa: {
+    backgroundColor: "blue",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
   },
 });
